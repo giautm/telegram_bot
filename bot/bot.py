@@ -21,6 +21,7 @@ def devices(bot, update):
         with open('devices.txt') as devices_file:
             devices_list = devices_file.readlines()
             if len(devices_list) == 1:
+                print devices_list[0]
                 keyboard = [[InlineKeyboardButton(devices_list[0], callback_data=devices_list[0])]]
 
                 reply_markup = InlineKeyboardMarkup(keyboard)
