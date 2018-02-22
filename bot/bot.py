@@ -5,6 +5,7 @@
 # This program is dedicated to the public domain under the CC0 license.
 """
 import logging
+import os.path
 
 import requests
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
@@ -15,13 +16,36 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 
-def lampe(bot, update):
-    keyboard = [[InlineKeyboardButton("Toggle", callback_data='toggle'),
-                 InlineKeyboardButton("Info", callback_data='info')]]
+def devices(bot, update):
+    if os.path.isfile("devices.txt"):
+        with open('devices.txt') as devices_file:
+            devices = devices_file.readlines()
+            keyboard = [[InlineKeyboardButton(devices[0], callback_data=devices[0]),
+                         InlineKeyboardButton(devices[1], callback_data=devices[1])]]
+
+            reply_markup = InlineKeyboardMarkup(keyboard)
+
+            update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
+    else:
+        keyboard = [[InlineKeyboardButton('Add device', callback_data='add'),
+                     InlineKeyboardButton('No', callback_data='cancel')]]
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        update.message.reply_text('No device added, do you want to add one?', reply_markup=reply_markup)
+
+
+def usage(bot, update, device):
+    keyboard = [[InlineKeyboardButton("Toggle", callback_data='toggle/' + device),
+                 InlineKeyboardButton("Info", callback_data='info' + device)]]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    update.message.reply_text('Please choose:', reply_markup=reply_markup)
+    update.message.reply_text('What do you want to do with' + device + '+', reply_markup=reply_markup)
+
+
+def adddevice(bot, update):
+    with open("devices.txt", "a") as devices_file:
+        devices_file.write(update.message.text)
 
 
 def link(request):
@@ -35,13 +59,23 @@ def link(request):
 def button(bot, update):
     query = update.callback_query
 
-    bot.edit_message_text(text="Lampe is " + link(query.data) + ".",
-                          chat_id=query.message.chat_id,
-                          message_id=query.message.message_id)
+    if 'toggle' in query.data or 'info' in query.data:
+        text = query.data
+        device = text.split('/')[1]
+        command = text.split('/')[0]
+        bot.edit_message_text(text=device + " is " + link(command) + ".",
+                              chat_id=query.message.chat_id,
+                              message_id=query.message.message_id)
+    elif query.data == 'add':
+        bot.edit_message_text(text='Add a device like this: "device_name, device_ip".',
+                              chat_id=query.message.chat_id,
+                              message_id=query.message.message_id)
+    else:
+        usage(bot, update, query.data)
 
 
 def help(bot, update):
-    update.message.reply_text("/lampe")
+    update.message.reply_text("/devices")
 
 
 def error(bot, update, error):
@@ -55,7 +89,9 @@ def main():
 
     updater = Updater(token())
 
-    updater.dispatcher.add_handler(CommandHandler('lampe', lampe))
+    updater.dispatcher.add_handler(CommandHandler('devices', devices))
+    updater.dispatcher.add_handler(CommandHandler('usage', usage))
+    updater.dispatcher.add_handler(CommandHandler('add', adddevice))
     updater.dispatcher.add_handler(CallbackQueryHandler(button))
     updater.dispatcher.add_handler(CommandHandler('help', help))
     updater.dispatcher.add_error_handler(error)
