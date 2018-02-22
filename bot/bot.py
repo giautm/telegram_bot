@@ -68,7 +68,8 @@ def main():
 
 def token():
     with open('/home/pi/token.txt', 'r') as tokenfile:
-        data = tokenfile.read().replace('/n', '')
+        data = tokenfile.read()
+        data = data.split(' ')[0]
         print data
         return data
 
