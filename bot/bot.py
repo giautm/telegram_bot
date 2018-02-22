@@ -68,7 +68,7 @@ def main():
 
 def token():
     with open('/home/pi/token.txt', 'r') as tokenfile:
-        data = tokenfile.read()
+        data = tokenfile.read()[::-1]
         print data
         return data
 
