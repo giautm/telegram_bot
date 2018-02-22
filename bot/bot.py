@@ -68,8 +68,7 @@ def main():
 
 def token():
     with open('/home/pi/token.txt', 'r') as tokenfile:
-        data = tokenfile.read()
-        data = data.split('/n')[0]
+        data = filter(None, (line.rstrip() for line in tokenfile))
         print data
         return data
 
