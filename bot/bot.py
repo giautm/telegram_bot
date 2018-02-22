@@ -22,7 +22,6 @@ def devices(bot, update):
             devices_list = devices_file.readlines()
             if len(devices_list) == 1:
                 name1 = devices_list[0].split(',')[0]
-                print name1
                 keyboard = [[InlineKeyboardButton(name1, callback_data=name1)],
                             [InlineKeyboardButton('Add device', callback_data='add'),
                              InlineKeyboardButton('Cancel', callback_data='cancel')]]
@@ -41,7 +40,6 @@ def devices(bot, update):
     else:
         keyboard = [[InlineKeyboardButton('Add device', callback_data='add'),
                      InlineKeyboardButton('No', callback_data='cancel')]]
-
         reply_markup = InlineKeyboardMarkup(keyboard)
         update.message.reply_text('No device added, do you want to add one?', reply_markup=reply_markup)
 
@@ -51,7 +49,7 @@ def usage(bot, update, device):
     keyboard = [[InlineKeyboardButton("Toggle", callback_data='toggle/' + device),
                  InlineKeyboardButton("Info", callback_data='info/' + device)]]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('What do you want to do with' + device + '?', reply_markup=reply_markup)
+    bot.edit_message_text('What do you want to do with' + device + '?', reply_markup=reply_markup)
 
 
 def adddevice(bot, update):
