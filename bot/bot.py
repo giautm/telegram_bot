@@ -51,6 +51,8 @@ def error(bot, update, error):
 
 def main():
     # Create the Updater and pass it your bot's token.
+    print "Bot started..."
+
     updater = Updater(token())
 
     updater.dispatcher.add_handler(CommandHandler('lampe', lampe))
@@ -69,7 +71,6 @@ def main():
 def token():
     with open('/home/pi/token.txt', 'r') as tokenfile:
         data = filter(None, (line.rstrip() for line in tokenfile))[0]
-        print data
         return data
 
 
