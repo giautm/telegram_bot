@@ -23,9 +23,9 @@ def devices(bot, update):
             if len(devices_list) == 1:
                 name1 = devices_list[0].split(',')[0]
                 print name1
-                keyboard = [[InlineKeyboardButton(name1, callback_data=name1)]]
-                keyboard.extend([InlineKeyboardButton('Add device', callback_data='add'),
-                                 InlineKeyboardButton('Cancel', callback_data='cancel')])
+                keyboard = [[InlineKeyboardButton(name1, callback_data=name1)],
+                            [InlineKeyboardButton('Add device', callback_data='add'),
+                             InlineKeyboardButton('Cancel', callback_data='cancel')]]
                 reply_markup = InlineKeyboardMarkup(keyboard)
                 update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
 
@@ -33,9 +33,9 @@ def devices(bot, update):
                 name1 = devices_list[0].split(',')[0]
                 name2 = devices_list[1].split(',')[1]
                 keyboard = [[InlineKeyboardButton(name1, callback_data=name1),
-                             InlineKeyboardButton(name2, callback_data=name2)]]
-                keyboard.extend([InlineKeyboardButton('Add device', callback_data='add'),
-                                 InlineKeyboardButton('Cancel', callback_data='cancel')])
+                             InlineKeyboardButton(name2, callback_data=name2)],
+                            [InlineKeyboardButton('Add device', callback_data='add'),
+                             InlineKeyboardButton('Cancel', callback_data='cancel')]]
                 reply_markup = InlineKeyboardMarkup(keyboard)
                 update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
     else:
