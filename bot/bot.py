@@ -21,18 +21,17 @@ def devices(bot, update):
         with open('devices.txt') as devices_file:
             devices_list = devices_file.readlines()
             if len(devices_list) == 1:
-                print devices_list[0]
-                keyboard = [[InlineKeyboardButton(devices_list[0], callback_data=devices_list[0])]]
-
+                name1 = devices_list[0].split(',')[0]
+                keyboard = [[InlineKeyboardButton(name1, callback_data=name1)]]
                 reply_markup = InlineKeyboardMarkup(keyboard)
-
                 update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
 
             elif len(devices_list) == 2:
-                keyboard = [[InlineKeyboardButton(devices_list[0], callback_data=devices_list[0]),
-                             InlineKeyboardButton(devices_list[1], callback_data=devices_list[1])]]
+                name1 = devices_list[0].split(',')[0]
+                name2 = devices_list[1].split(',')[1]
+                keyboard = [[InlineKeyboardButton(name1, callback_data=name1),
+                             InlineKeyboardButton(name2, callback_data=name2)]]
                 reply_markup = InlineKeyboardMarkup(keyboard)
-
                 update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
     else:
         keyboard = [[InlineKeyboardButton('Add device', callback_data='add'),
@@ -80,7 +79,12 @@ def button(bot, update):
         bot.edit_message_text(text='Add a device like this: "/add device_name, device_ip".',
                               chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
+    elif query.data == 'cancel':
+        bot.edit_message_text(text='Command canceled.',
+                              chat_id=query.message.chat_id,
+                              message_id=query.message.message_id)
     else:
+        print query.data
         usage(bot, update, query.data)
 
 
