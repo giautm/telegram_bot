@@ -78,7 +78,7 @@ def button(bot, update):
 
     if 'toggle' in query.data or 'info' in query.data:
         text = query.data
-        device = text.split('/')[1][1::]
+        device = text.split('/')[1]
         request = text.split('/')[0]
         bot.edit_message_text(text=device + " is " + link(device, request) + ".",
                               chat_id=query.message.chat_id,
