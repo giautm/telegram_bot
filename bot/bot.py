@@ -19,13 +19,20 @@ logger = logging.getLogger(__name__)
 def devices(bot, update):
     if os.path.isfile("devices.txt"):
         with open('devices.txt') as devices_file:
-            devices = devices_file.readlines()
-            keyboard = [[InlineKeyboardButton(devices[0], callback_data=devices[0]),
-                         InlineKeyboardButton(devices[1], callback_data=devices[1])]]
+            devices_list = devices_file.readlines()
+            if len(devices_list) == 1:
+                keyboard = [[InlineKeyboardButton(devices_list[0], callback_data=devices_list[0])]]
 
-            reply_markup = InlineKeyboardMarkup(keyboard)
+                reply_markup = InlineKeyboardMarkup(keyboard)
 
-            update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
+                update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
+
+            elif len(devices_list) == 2:
+                keyboard = [[InlineKeyboardButton(devices_list[0], callback_data=devices_list[0]),
+                             InlineKeyboardButton(devices_list[1], callback_data=devices_list[1])]]
+                reply_markup = InlineKeyboardMarkup(keyboard)
+
+                update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
     else:
         keyboard = [[InlineKeyboardButton('Add device', callback_data='add'),
                      InlineKeyboardButton('No', callback_data='cancel')]]
@@ -36,7 +43,7 @@ def devices(bot, update):
 
 def usage(bot, update, device):
     keyboard = [[InlineKeyboardButton("Toggle", callback_data='toggle/' + device),
-                 InlineKeyboardButton("Info", callback_data='info' + device)]]
+                 InlineKeyboardButton("Info", callback_data='info/' + device)]]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -92,7 +99,6 @@ def main():
     updater = Updater(token())
 
     updater.dispatcher.add_handler(CommandHandler('devices', devices))
-    updater.dispatcher.add_handler(CommandHandler('usage', usage))
     updater.dispatcher.add_handler(CommandHandler('add', adddevice))
     updater.dispatcher.add_handler(CallbackQueryHandler(button))
     updater.dispatcher.add_handler(CommandHandler('help', help))
