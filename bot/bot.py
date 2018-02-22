@@ -23,6 +23,8 @@ def devices(bot, update):
             if len(devices_list) == 1:
                 name1 = devices_list[0].split(',')[0]
                 keyboard = [[InlineKeyboardButton(name1, callback_data=name1)]]
+                keyboard.extend([InlineKeyboardButton('Add device', callback_data='add'),
+                                 InlineKeyboardButton('Cancel', callback_data='cancel')])
                 reply_markup = InlineKeyboardMarkup(keyboard)
                 update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
 
@@ -31,6 +33,8 @@ def devices(bot, update):
                 name2 = devices_list[1].split(',')[1]
                 keyboard = [[InlineKeyboardButton(name1, callback_data=name1),
                              InlineKeyboardButton(name2, callback_data=name2)]]
+                keyboard.extend([InlineKeyboardButton('Add device', callback_data='add'),
+                                 InlineKeyboardButton('Cancel', callback_data='cancel')])
                 reply_markup = InlineKeyboardMarkup(keyboard)
                 update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
     else:
@@ -42,17 +46,16 @@ def devices(bot, update):
 
 
 def usage(bot, update, device):
+    print device
     keyboard = [[InlineKeyboardButton("Toggle", callback_data='toggle/' + device),
                  InlineKeyboardButton("Info", callback_data='info/' + device)]]
-
     reply_markup = InlineKeyboardMarkup(keyboard)
-
-    update.message.reply_text('What do you want to do with' + device + '+', reply_markup=reply_markup)
+    update.message.reply_text('What do you want to do with' + device + '?', reply_markup=reply_markup)
 
 
 def adddevice(bot, update):
     with open("devices.txt", "a") as devices_file:
-        device = update.message.text[4::]
+        device = update.message.text[5::]
         devices_file.write(device)
         update.message.reply_text('Device added!')
 
@@ -84,7 +87,6 @@ def button(bot, update):
                               chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
     else:
-        print query.data
         usage(bot, update, query.data)
 
 
