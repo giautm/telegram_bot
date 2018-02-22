@@ -22,6 +22,7 @@ def devices(bot, update):
             devices_list = devices_file.readlines()
             if len(devices_list) == 1:
                 name1 = devices_list[0].split(',')[0]
+                print name1
                 keyboard = [[InlineKeyboardButton(name1, callback_data=name1)]]
                 keyboard.extend([InlineKeyboardButton('Add device', callback_data='add'),
                                  InlineKeyboardButton('Cancel', callback_data='cancel')])
