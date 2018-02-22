@@ -45,7 +45,9 @@ def usage(bot, update, device):
 
 def adddevice(bot, update):
     with open("devices.txt", "a") as devices_file:
-        devices_file.write(update.message.text)
+        device = update.message.text[4::]
+        devices_file.write(device)
+        update.message.reply_text('Device added!')
 
 
 def link(request):
@@ -67,7 +69,7 @@ def button(bot, update):
                               chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
     elif query.data == 'add':
-        bot.edit_message_text(text='Add a device like this: "device_name, device_ip".',
+        bot.edit_message_text(text='Add a device like this: "/add device_name, device_ip".',
                               chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
     else:
