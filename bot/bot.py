@@ -46,10 +46,10 @@ def devices(bot, update):
 
 def usage(bot, update, device):
     print device
-    # keyboard = [[InlineKeyboardButton("Toggle", callback_data='toggle/' + device),
-    #             InlineKeyboardButton("Info", callback_data='info/' + device)]]
-    # reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('What do you want to do with' + device + '?')  # , reply_markup=reply_markup)
+    keyboard = [[InlineKeyboardButton("Toggle", callback_data='toggle/'),
+                 InlineKeyboardButton("Info", callback_data='info/')]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text('What do you want to do with ?', reply_markup=reply_markup)
 
 
 def adddevice(bot, update):
