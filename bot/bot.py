@@ -44,13 +44,16 @@ def devices(bot, update):
         update.message.reply_text('No device added, do you want to add one?', reply_markup=reply_markup)
 
 
-def usage(bot, update, device):
+def usage(bot, update, query):
+    device = query.data
     print device
     keyboard = [[InlineKeyboardButton("Toggle", callback_data='toggle/'),
                  InlineKeyboardButton("Info", callback_data='info/')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('What do you want to do with ?', reply_markup=reply_markup)
-
+    # update.message.reply_text('What do you want to do with?', reply_markup=reply_markup)
+    bot.edit_message_text('What do you want to do with?', reply_markup=reply_markup,
+                          chat_id=query.message.chat_id,
+                          message_id=query.message.message_id)
 
 def adddevice(bot, update):
     with open("devices.txt", "a") as devices_file:
@@ -86,7 +89,7 @@ def button(bot, update):
                               chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
     else:
-        usage(bot, update, query.data)
+        usage(bot, update, query)
 
 
 def help(bot, update):
