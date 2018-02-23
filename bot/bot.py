@@ -24,10 +24,14 @@ def devices(bot, update):
                 keyboard = []
                 for line in devices_list:
                     device = line.split(',')[0]
-                    keyboard.extend([InlineKeyboardButton(device, callback_data=device)])
+                    keyboard.extend([InlineKeyboardButton(device, callback_data=device)], )
                 keyboard.extend([InlineKeyboardButton('Add device', callback_data='add'),
                                  InlineKeyboardButton('Cancel', callback_data='cancel')])
+
+                print keyboard
+
                 reply_markup = InlineKeyboardMarkup(keyboard)
+
                 update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
         else:
             keyboard = [[InlineKeyboardButton('Add device', callback_data='add'),
