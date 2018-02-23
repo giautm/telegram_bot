@@ -133,7 +133,8 @@ def wake(bot, update):
     if os.path.isfile('wake.txt'):
         with open('wake.txt') as wake_file:
             wake_list = wake_file.readlines()
-            call(['wakeonlan', wake_list[0]] + ' >/dev/null')
+            command = wake_list[0] + ' >/dev/null'
+            call(['wakeonlan', command])
             update.message.reply_text('Wake executed.')
 
 
