@@ -61,12 +61,11 @@ def adddevice(bot, update):
         update.message.reply_text('Device added!')
 
 
-def link(device, request):
+def action(device, request):
     with open('devices.txt') as devices_file:
         for line in devices_file:
             if device in line:
                 ip = line.split(',')[1][1::]
-                print ip
                 link = "http://" + ip + "/cm?cmnd=Power"
                 if request == 'toggle':
                     link += "%20TOGGLE"
@@ -81,7 +80,7 @@ def button(bot, update):
         text = query.data
         device = text.split('/')[1]
         request = text.split('/')[0]
-        bot.edit_message_text(text=device + " is " + link(device, request) + ".",
+        bot.edit_message_text(text=device + " is " + action(device, request) + ".",
                               chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
     elif query.data == 'add':
