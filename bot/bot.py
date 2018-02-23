@@ -120,10 +120,10 @@ def button(bot, update):
         for line in lines:
             if device not in line:
                 devices_file.write(line)
-
-        bot.edit_message_text(text='Device removed.',
-                              chat_id=query.message.chat_id,
-                              message_id=query.message.message_id)
+            else:
+                bot.edit_message_text(text=('Device (' + line + ') removed!'),
+                                      chat_id=query.message.chat_id,
+                                      message_id=query.message.message_id)
     else:
         usage(bot, update, query)
 
