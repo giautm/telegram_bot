@@ -53,28 +53,22 @@ def usage(bot, update, query):
                           message_id=query.message.message_id)
 
 
-def removedevice(bot, update, device):
-    if len(update.message.text) > 9:
-        device = update.message.text[8::]
-        removeaction(bot, update, device)
-    elif len(device) > 0:
-        removeaction(bot, update, device)
-    else:
+def removedevice(bot, update):
+    if len(update.message.text) <= 9:
         update.message.reply_text('Command not used properly. Use /help to see the commands.')
-
-
-def removeaction(bot, update, device):
-    devices_file = open("devices.txt", 'r')
-    lines = devices_file.readlines()
-    devices_file.close()
-    devices_file = open("devices.txt", 'w')
-    for line in lines:
-        if device not in line:
-            devices_file.write(line)
-        else:
-            update.message.reply_text('Device (' + line.split('\n')[0] + ') removed!')
-            return
-    update.message.reply_text('Device (' + device + ') not found!')
+    else:
+        device = update.message.text[8::]
+        devices_file = open("devices.txt", 'r')
+        lines = devices_file.readlines()
+        devices_file.close()
+        devices_file = open("devices.txt", 'w')
+        for line in lines:
+            if device not in line:
+                devices_file.write(line)
+            else:
+                update.message.reply_text('Device (' + line.split('\n')[0] + ') removed!')
+                return
+        update.message.reply_text('Device (' + device + ') not found!')
 
 
 def adddevice(bot, update):
@@ -116,18 +110,17 @@ def button(bot, update):
                               message_id=query.message.message_id)
     elif 'remove' in query.data:
         device = query.data.split('/')[1]
-        removedevice(bot, update, device)
-        # devices_file = open("devices.txt", 'r')
-        # lines = devices_file.readlines()
-        # devices_file.close()
-        # devices_file = open("devices.txt", 'w')
-        # for line in lines:
-        #    if device not in line:
-        #        devices_file.write(line)
-        #    else:
-        #        bot.edit_message_text(text=('Device (' + line.split('\n')[0] + ') removed!'),
-        #                              chat_id=query.message.chat_id,
-        #                              message_id=query.message.message_id)
+        devices_file = open("devices.txt", 'r')
+        lines = devices_file.readlines()
+        devices_file.close()
+        devices_file = open("devices.txt", 'w')
+        for line in lines:
+            if device not in line:
+                devices_file.write(line)
+            else:
+                bot.edit_message_text(text=('Device (' + line.split('\n')[0] + ') removed!'),
+                                      chat_id=query.message.chat_id,
+                                      message_id=query.message.message_id)
     else:
         usage(bot, update, query)
 
