@@ -70,7 +70,8 @@ def removedevice(bot, update):
     for line in lines:
         if device not in line:
             devices_file.write(line)
-    update.message.reply_text('Device (' + device + ') remove!')
+        else:
+            update.message.reply_text('Device (' + line + ') removed!')
 
 
 def adddevice(bot, update):
