@@ -94,12 +94,15 @@ def button(bot, update):
                               message_id=query.message.message_id)
     elif 'remove' in query.data:
         device = query.data.split('/')[1]
-        with open('devices.txt') as devices_file:
-            for line in devices_file:
-                if device not in line:
-                    devices_file.write(line)
+        devices_file = open('devices.txt', 'r')
+        lines = devices_file.readlines()
+        devices_file.close()
+        devices_file = open('devices.txt', 'w')
+        for line in lines:
+            if device not in line:
+                devices_file.write(line)
 
-            bot.edit_message_text(text='Device removed.',
+        bot.edit_message_text(text='Device removed.',
                                   chat_id=query.message.chat_id,
                                   message_id=query.message.message_id)
     else:
