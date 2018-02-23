@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 def devices(bot, update):
-    if os.path.isfile("devices.txt"):
+    if os.path.isfile("devices.txt") or os.path.getsize("devices.txt") > 0:
         with open('devices.txt') as devices_file:
             devices_list = devices_file.readlines()
             if len(devices_list) == 1:
@@ -94,10 +94,10 @@ def button(bot, update):
                               message_id=query.message.message_id)
     elif 'remove' in query.data:
         device = query.data.split('/')[1]
-        devices_file = open('devices.txt', 'r')
+        devices_file = open("devices.txt", 'r')
         lines = devices_file.readlines()
         devices_file.close()
-        devices_file = open('devices.txt', 'w')
+        devices_file = open("devices.txt", 'w')
         for line in lines:
             if device not in line:
                 devices_file.write(line)
