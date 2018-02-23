@@ -63,16 +63,20 @@ def usage(bot, update, query):
 
 
 def removedevice(bot, update):
-    device = update.message.text[8::]
-    devices_file = open("devices.txt", 'r')
-    lines = devices_file.readlines()
-    devices_file.close()
-    devices_file = open("devices.txt", 'w')
-    for line in lines:
-        if device not in line:
-            devices_file.write(line)
-        else:
-            update.message.reply_text('Device (' + line + ') removed!')
+    if len(update.message.text) <= 9:
+        update.message.reply_text('Command not used properly. Use /help to see the commands.')
+    else:
+        device = update.message.text[8::]
+        devices_file = open("devices.txt", 'r')
+        lines = devices_file.readlines()
+        devices_file.close()
+        devices_file = open("devices.txt", 'w')
+        for line in lines:
+            if device not in line:
+                devices_file.write(line)
+                update.message.reply_text('Device (' + device + ') not found!')
+            else:
+                update.message.reply_text('Device (' + line + ') removed!')
 
 
 def adddevice(bot, update):
@@ -130,7 +134,9 @@ def button(bot, update):
 
 
 def help(bot, update):
-    update.message.reply_text("/devices")
+    update.message.reply_text('/devices' + '\n'
+                              + '/add device_name, device_ip".'
+                              + '\n' + '/remove device_name')
 
 
 def error(bot, update, error):
