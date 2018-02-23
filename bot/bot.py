@@ -32,7 +32,7 @@ def devices(bot, update):
                 elif len(devices_list) == 2:
                     print devices_list
                     name1 = devices_list[0].split(',')[0]
-                    name2 = devices_list[1].split(',')[1]
+                    name2 = devices_list[1].split(',')[0]
                     keyboard = [[InlineKeyboardButton(name1, callback_data=name1),
                                  InlineKeyboardButton(name2, callback_data=name2)],
                                 [InlineKeyboardButton('Add device', callback_data='add'),
