@@ -133,9 +133,7 @@ def wake(bot, update):
     if os.path.isfile('wake.txt'):
         with open('wake.txt') as wake_file:
             address = filter(None, (line.rstrip() for line in wake_file))[0]
-            command = address + ' &> /dev/null'
-            print command
-            call(['wakeonlan', command])
+            call(['wakeonlan', address])
             update.message.reply_text('Wake executed.')
 
 
