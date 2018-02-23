@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Basic example for a bot that uses inline keyboards.
+"""Modified example of inline-keyboard bot.
 
 # This program is dedicated to the public domain under the CC0 license.
 """
