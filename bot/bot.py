@@ -54,7 +54,8 @@ def usage(bot, update, query):
     device = query.data
     keyboard = [[InlineKeyboardButton("Toggle", callback_data='toggle/' + device),
                  InlineKeyboardButton("Info", callback_data='info/' + device)],
-                [InlineKeyboardButton('Remove device', callback_data='remove/' + device)]]
+                [InlineKeyboardButton('Remove device', callback_data='remove/' + device)],
+                [InlineKeyboardButton('Cancel', callback_data='cancel')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     bot.edit_message_text('What do you want to do with ' + device + '?', reply_markup=reply_markup,
                           chat_id=query.message.chat_id,
