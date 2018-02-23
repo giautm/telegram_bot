@@ -54,7 +54,7 @@ def usage(bot, update, query):
 
 
 def removedevice(bot, update):
-    if len(update.message.text) <= 9:
+    if len(update.message.text) <= 8:
         update.message.reply_text('Command not used properly. Use /help to see the commands.')
     else:
         device = update.message.text[8::]
@@ -73,9 +73,12 @@ def removedevice(bot, update):
 
 def adddevice(bot, update):
     device = update.message.text[5::]
-    with open("devices.txt", 'a') as devices_file:
-        devices_file.write(device + '\n')
-        update.message.reply_text('Device (' + device + ') added!')
+    if device.split(',') < 1:
+        update.message.reply_text('Command not used properly. Use /help to see the commands.')
+    else:
+        with open("devices.txt", 'a') as devices_file:
+            devices_file.write(device + '\n')
+            update.message.reply_text('Device (' + device + ') added!')
 
 
 def action(device, request):
@@ -158,9 +161,10 @@ def main():
 
 
 def token():
-    with open('/home/pi/token.txt', 'r') as tokenfile:
-        data = filter(None, (line.rstrip() for line in tokenfile))[0]
-        return data
+    if os.path.isfile('/home/pi/token.txt'):
+        with open('/home/pi/token.txt', 'r') as tokenfile:
+            data = filter(None, (line.rstrip() for line in tokenfile))[0]
+            return data
 
 
 if __name__ == '__main__':
