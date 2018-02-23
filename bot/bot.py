@@ -152,10 +152,15 @@ def removewake(bot, update):
         os.remove('wake.txt')
         update.message.reply_text('Wake removed!')
 
+
 def help(bot, update):
-    update.message.reply_text('/devices' + '\n'
-                              + '/add device_name, device_ip'
-                              + '\n' + '/remove device_name')
+    update.message.reply_text('Available commands:'
+                              + '\n' + '/devices'
+                              + '\n' + '/add device_name, device_ip'
+                              + '\n' + '/remove device_name'
+                              + '\n' + '/wake'
+                              + '\n' + '/addwake'
+                              + '\n' + '/removewake')
 
 
 def error(bot, update, error):
