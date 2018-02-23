@@ -24,8 +24,8 @@ def devices(bot, update):
                 keyboard = []
                 for line in devices_list:
                     device = line.split(',')[0]
-                    keyboard.extend([InlineKeyboardButton(device, callback_data=device)], )
-                keyboard.extend([InlineKeyboardButton('Add device', callback_data='add'),
+                    keyboard.append([InlineKeyboardButton(device, callback_data=device)], )
+                keyboard.append([InlineKeyboardButton('Add device', callback_data='add'),
                                  InlineKeyboardButton('Cancel', callback_data='cancel')])
 
                 print keyboard
