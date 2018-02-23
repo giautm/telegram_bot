@@ -17,26 +17,32 @@ logger = logging.getLogger(__name__)
 
 
 def devices(bot, update):
-    if os.path.isfile("devices.txt") or os.path.getsize("devices.txt") > 0:
-        with open('devices.txt') as devices_file:
-            devices_list = devices_file.readlines()
-            if len(devices_list) == 1:
-                name1 = devices_list[0].split(',')[0]
-                keyboard = [[InlineKeyboardButton(name1, callback_data=name1)],
-                            [InlineKeyboardButton('Add device', callback_data='add'),
-                             InlineKeyboardButton('Cancel', callback_data='cancel')]]
-                reply_markup = InlineKeyboardMarkup(keyboard)
-                update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
+    if os.path.isfile("devices.txt"):
+        if os.path.getsize("devices.txt") > 0:
+            with open('devices.txt') as devices_file:
+                devices_list = devices_file.readlines()
+                if len(devices_list) == 1:
+                    name1 = devices_list[0].split(',')[0]
+                    keyboard = [[InlineKeyboardButton(name1, callback_data=name1)],
+                                [InlineKeyboardButton('Add device', callback_data='add'),
+                                 InlineKeyboardButton('Cancel', callback_data='cancel')]]
+                    reply_markup = InlineKeyboardMarkup(keyboard)
+                    update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
 
-            elif len(devices_list) == 2:
-                name1 = devices_list[0].split(',')[0]
-                name2 = devices_list[1].split(',')[1]
-                keyboard = [[InlineKeyboardButton(name1, callback_data=name1),
-                             InlineKeyboardButton(name2, callback_data=name2)],
-                            [InlineKeyboardButton('Add device', callback_data='add'),
-                             InlineKeyboardButton('Cancel', callback_data='cancel')]]
-                reply_markup = InlineKeyboardMarkup(keyboard)
-                update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
+                elif len(devices_list) == 2:
+                    name1 = devices_list[0].split(',')[0]
+                    name2 = devices_list[1].split(',')[1]
+                    keyboard = [[InlineKeyboardButton(name1, callback_data=name1),
+                                 InlineKeyboardButton(name2, callback_data=name2)],
+                                [InlineKeyboardButton('Add device', callback_data='add'),
+                                 InlineKeyboardButton('Cancel', callback_data='cancel')]]
+                    reply_markup = InlineKeyboardMarkup(keyboard)
+                    update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
+        else:
+            keyboard = [[InlineKeyboardButton('Add device', callback_data='add'),
+                         InlineKeyboardButton('No', callback_data='cancel')]]
+            reply_markup = InlineKeyboardMarkup(keyboard)
+            update.message.reply_text('No device added, do you want to add one?', reply_markup=reply_markup)
     else:
         keyboard = [[InlineKeyboardButton('Add device', callback_data='add'),
                      InlineKeyboardButton('No', callback_data='cancel')]]
@@ -103,8 +109,8 @@ def button(bot, update):
                 devices_file.write(line)
 
         bot.edit_message_text(text='Device removed.',
-                                  chat_id=query.message.chat_id,
-                                  message_id=query.message.message_id)
+                              chat_id=query.message.chat_id,
+                              message_id=query.message.message_id)
     else:
         usage(bot, update, query)
 
