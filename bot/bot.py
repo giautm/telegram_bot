@@ -65,7 +65,7 @@ def action(device, request):
     with open('devices.txt') as devices_file:
         for line in devices_file:
             if device in line:
-                ip = line.split(',')[1][1::]
+                ip = line.split(',')[1][1:-1]
                 link = "http://" + ip + "/cm?cmnd=Power"
                 if request == 'toggle':
                     link += "%20TOGGLE"
