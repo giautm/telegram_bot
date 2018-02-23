@@ -47,7 +47,8 @@ def devices(bot, update):
 def usage(bot, update, query):
     device = query.data
     keyboard = [[InlineKeyboardButton("Toggle", callback_data='toggle/' + device),
-                 InlineKeyboardButton("Info", callback_data='info/' + device)]]
+                 InlineKeyboardButton("Info", callback_data='info/' + device)],
+                InlineKeyboardButton('Remove device', callback_data='remove/' + device)]
     reply_markup = InlineKeyboardMarkup(keyboard)
     bot.edit_message_text('What do you want to do with ' + device + ' ?', reply_markup=reply_markup,
                           chat_id=query.message.chat_id,
@@ -91,6 +92,15 @@ def button(bot, update):
         bot.edit_message_text(text='Command canceled.',
                               chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
+    elif 'remove' in query.data:
+        device = query.data.split('/')[1]
+        with open('devices.txt') as devices_file:
+            for line in devices_file:
+                if device not in line:
+                    devices_file.write(line)
+                    bot.edit_message_text(text='Device removed.',
+                                          chat_id=query.message.chat_id,
+                                          message_id=query.message.message_id)
     else:
         usage(bot, update, query)
 
