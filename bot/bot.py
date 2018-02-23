@@ -21,23 +21,14 @@ def devices(bot, update):
         if os.path.getsize("devices.txt") > 0:
             with open('devices.txt') as devices_file:
                 devices_list = devices_file.readlines()
-                if len(devices_list) == 1:
-                    name1 = devices_list[0].split(',')[0]
-                    keyboard = [[InlineKeyboardButton(name1, callback_data=name1)],
-                                [InlineKeyboardButton('Add device', callback_data='add'),
-                                 InlineKeyboardButton('Cancel', callback_data='cancel')]]
-                    reply_markup = InlineKeyboardMarkup(keyboard)
-                    update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
-
-                elif len(devices_list) == 2:
-                    name1 = devices_list[0].split(',')[0]
-                    name2 = devices_list[1].split(',')[0]
-                    keyboard = [[InlineKeyboardButton(name1, callback_data=name1),
-                                 InlineKeyboardButton(name2, callback_data=name2)],
-                                [InlineKeyboardButton('Add device', callback_data='add'),
-                                 InlineKeyboardButton('Cancel', callback_data='cancel')]]
-                    reply_markup = InlineKeyboardMarkup(keyboard)
-                    update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
+                keyboard = []
+                for line in devices_list:
+                    device = line.split(',')[0]
+                    keyboard.extend([InlineKeyboardButton(device, callback_data=device)])
+                keyboard.extend([InlineKeyboardButton('Add device', callback_data='add'),
+                                 InlineKeyboardButton('Cancel', callback_data='cancel')])
+                reply_markup = InlineKeyboardMarkup(keyboard)
+                update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
         else:
             keyboard = [[InlineKeyboardButton('Add device', callback_data='add'),
                          InlineKeyboardButton('No', callback_data='cancel')]]
