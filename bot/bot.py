@@ -30,6 +30,7 @@ def devices(bot, update):
                     update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
 
                 elif len(devices_list) == 2:
+                    print devices_list
                     name1 = devices_list[0].split(',')[0]
                     name2 = devices_list[1].split(',')[1]
                     keyboard = [[InlineKeyboardButton(name1, callback_data=name1),
@@ -56,20 +57,20 @@ def usage(bot, update, query):
                  InlineKeyboardButton("Info", callback_data='info/' + device)],
                 [InlineKeyboardButton('Remove device', callback_data='remove/' + device)]]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    bot.edit_message_text('What do you want to do with ' + device + ' ?', reply_markup=reply_markup,
+    bot.edit_message_text('What do you want to do with ' + device + '?', reply_markup=reply_markup,
                           chat_id=query.message.chat_id,
                           message_id=query.message.message_id)
 
 
 def adddevice(bot, update):
-    with open("devices.txt", "a") as devices_file:
+    with open("devices.txt", 'a') as devices_file:
         device = update.message.text[5::] + "\n"
         devices_file.write(device)
         update.message.reply_text('Device added!')
 
 
 def action(device, request):
-    with open('devices.txt') as devices_file:
+    with open("devices.txt") as devices_file:
         for line in devices_file:
             if device in line:
                 ip = line.split(',')[1][1:-1]
