@@ -140,6 +140,18 @@ def wake(bot, update):
         update.message.reply_text('No device to wake.')
 
 
+def addwake(bot, update):
+    address = update.message.text[9::]
+    with open("wake.txt", 'a') as devices_file:
+        devices_file.write(address + '\n')
+        update.message.reply_text('Wake (' + address + ') added!')
+
+
+def removewake(bot, update):
+    if os.path.isfile('wake.txt'):
+        os.remove('wake.txt')
+
+
 def help(bot, update):
     update.message.reply_text('/devices' + '\n'
                               + '/add device_name, device_ip'
@@ -161,6 +173,8 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('add', adddevice))
     updater.dispatcher.add_handler(CommandHandler('remove', removedevice))
     updater.dispatcher.add_handler(CommandHandler('wake', wake))
+    updater.dispatcher.add_handler(CommandHandler('addwake', addwake))
+    updater.dispatcher.add_handler(CommandHandler('removewake', removewake))
     updater.dispatcher.add_handler(CallbackQueryHandler(button))
     updater.dispatcher.add_handler(CommandHandler('help', help))
     updater.dispatcher.add_error_handler(error)
