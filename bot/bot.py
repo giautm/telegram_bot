@@ -141,10 +141,13 @@ def wake(bot, update):
 
 
 def addwake(bot, update):
-    address = update.message.text[9::]
-    with open("wake.txt", 'a') as devices_file:
-        devices_file.write(address + '\n')
-        update.message.reply_text('Wake (' + address + ') added!')
+    if os.path.isfile('wake.txt'):
+        update.message.reply_text('Wake already added!')
+    else:
+        address = update.message.text[9::]
+        with open("wake.txt", 'a') as devices_file:
+            devices_file.write(address + '\n')
+            update.message.reply_text('Wake (' + address + ') added!')
 
 
 def removewake(bot, update):
