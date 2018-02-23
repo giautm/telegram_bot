@@ -30,7 +30,6 @@ def devices(bot, update):
                     update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
 
                 elif len(devices_list) == 2:
-                    print devices_list
                     name1 = devices_list[0].split(',')[0]
                     name2 = devices_list[1].split(',')[0]
                     keyboard = [[InlineKeyboardButton(name1, callback_data=name1),
@@ -62,11 +61,24 @@ def usage(bot, update, query):
                           message_id=query.message.message_id)
 
 
+def removedevice(bot, update):
+    device = update.message.text[8::]
+    devices_file = open("devices.txt", 'r')
+    lines = devices_file.readlines()
+    devices_file.close()
+    devices_file = open("devices.txt", 'w')
+    for line in lines:
+        if device not in line:
+            devices_file.write(line)
+
+        update.message.reply_text('Device (' + device + ') remove!')
+
+
 def adddevice(bot, update):
     device = update.message.text[5::]
     with open("devices.txt", 'a') as devices_file:
         devices_file.write(device + '\n')
-        update.message.reply_text('Device added!')
+        update.message.reply_text('Device (' + device + ') added!')
 
 
 def action(device, request):
@@ -133,6 +145,7 @@ def main():
 
     updater.dispatcher.add_handler(CommandHandler('devices', devices))
     updater.dispatcher.add_handler(CommandHandler('add', adddevice))
+    updater.dispatcher.add_handler(CommandHandler('remove', removedevice))
     updater.dispatcher.add_handler(CallbackQueryHandler(button))
     updater.dispatcher.add_handler(CommandHandler('help', help))
     updater.dispatcher.add_error_handler(error)
