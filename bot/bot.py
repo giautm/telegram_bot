@@ -134,6 +134,7 @@ def wake(bot, update):
         with open('wake.txt') as wake_file:
             wake_list = wake_file.readlines()
             call(['wol', wake_list[0]])
+            update.message.reply_text('Wake executed.')
 
 
 def help(bot, update):
