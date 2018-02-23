@@ -56,7 +56,7 @@ def usage(bot, update, query):
 
 def adddevice(bot, update):
     with open("devices.txt", "a") as devices_file:
-        device = update.message.text[5::]
+        device = update.message.text[5::] + "/n"
         devices_file.write(device)
         update.message.reply_text('Device added!')
 
