@@ -63,9 +63,10 @@ def adddevice(bot, update):
 
 def link(device, request):
     with open('devices.txt') as devices_file:
-        devices_list = devices_file.readlines()
-        ip = devices_list[devices_list.index(device)].split(',')[1]
-        print ip
+        for line in devices_file:
+            if device in line:
+                ip = line.split(',')[1]
+                print ip
     link = "http://192.168.2.61/cm?cmnd=Power"
     if request == 'toggle':
         link += "%20TOGGLE"
