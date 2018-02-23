@@ -54,14 +54,16 @@ def usage(bot, update, query):
 
 
 def removedevice(bot, update, device):
-    if len(device) > 0 or len(update.message.text) > 9:
+    if len(update.message.text) > 9:
+        device = update.message.text[8::]
+        removeaction(bot, update, device)
+    elif len(device) > 0:
         removeaction(bot, update, device)
     else:
         update.message.reply_text('Command not used properly. Use /help to see the commands.')
 
 
 def removeaction(bot, update, device):
-    device = update.message.text[8::]
     devices_file = open("devices.txt", 'r')
     lines = devices_file.readlines()
     devices_file.close()
@@ -73,6 +75,7 @@ def removeaction(bot, update, device):
             update.message.reply_text('Device (' + line.split('\n')[0] + ') removed!')
             return
     update.message.reply_text('Device (' + device + ') not found!')
+
 
 def adddevice(bot, update):
     device = update.message.text[5::]
