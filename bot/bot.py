@@ -73,7 +73,7 @@ def removedevice(bot, update):
 
 def adddevice(bot, update):
     device = update.message.text[5::]
-    if device.split(',') < 1:
+    if device.split(',') < 2:
         update.message.reply_text('Command not used properly. Use /help to see the commands.')
     else:
         with open("devices.txt", 'a') as devices_file:
