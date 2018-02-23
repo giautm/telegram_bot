@@ -66,7 +66,7 @@ def removedevice(bot, update):
             if device not in line:
                 devices_file.write(line)
             else:
-                update.message.reply_text('Device (' + line + ') removed!')
+                update.message.reply_text('Device (' + line.split('\n')[0] + ') removed!')
                 return
         update.message.reply_text('Device (' + device + ') not found!')
 
@@ -127,7 +127,7 @@ def button(bot, update):
 
 def help(bot, update):
     update.message.reply_text('/devices' + '\n'
-                              + '/add device_name, device_ip".'
+                              + '/add device_name, device_ip'
                               + '\n' + '/remove device_name')
 
 
