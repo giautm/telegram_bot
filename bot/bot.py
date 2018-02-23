@@ -6,6 +6,7 @@
 """
 import logging
 import os.path
+from subprocess import call
 
 import requests
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
@@ -128,6 +129,13 @@ def button(bot, update):
         usage(bot, update, query)
 
 
+def wake(bot, update):
+    if os.path.isfile('wake.txt'):
+        with open('wake.txt') as wake_file:
+            wake_list = wake_file.readlines()
+            call(['wol', wake_list[0]])
+
+
 def help(bot, update):
     update.message.reply_text('/devices' + '\n'
                               + '/add device_name, device_ip'
@@ -148,6 +156,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('devices', devices))
     updater.dispatcher.add_handler(CommandHandler('add', adddevice))
     updater.dispatcher.add_handler(CommandHandler('remove', removedevice))
+    updater.dispatcher.add_handler(CommandHandler('wake', wake))
     updater.dispatcher.add_handler(CallbackQueryHandler(button))
     updater.dispatcher.add_handler(CommandHandler('help', help))
     updater.dispatcher.add_error_handler(error)
