@@ -150,7 +150,7 @@ def addwake(bot, update):
 def removewake(bot, update):
     if os.path.isfile('wake.txt'):
         os.remove('wake.txt')
-
+        update.message.reply_text('Wake removed!')
 
 def help(bot, update):
     update.message.reply_text('/devices' + '\n'
