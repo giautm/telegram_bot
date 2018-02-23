@@ -6,7 +6,7 @@
 """
 import logging
 import os.path
-from subprocess import call
+import subprocess
 
 import requests
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
@@ -133,8 +133,11 @@ def wake(bot, update):
     if os.path.isfile('wake.txt'):
         with open('wake.txt') as wake_file:
             address = filter(None, (line.rstrip() for line in wake_file))[0]
-            call(['wakeonlan', address])
+            fnull = open(os.devnull, 'w')
+            retcode = subprocess.call(['wakeonlan', address], stdout=fnull, stderr=subprocess.STDOUT)
             update.message.reply_text('Wake executed.')
+    else:
+        update.message.reply_text('No device to wake.')
 
 
 def help(bot, update):
