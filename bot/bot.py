@@ -161,7 +161,7 @@ def help(bot, update):
     update.message.reply_text('Available commands:'
                               + '\n' + '/devices'
                               + '\n' + '/add device_name, device_ip'
-                              + '\n' + '/remove device_name'
+                              + '\n' + '/remove'
                               + '\n' + '/wake'
                               + '\n' + '/addwake'
                               + '\n' + '/removewake')
