@@ -129,7 +129,9 @@ def button(bot, update):
                 for line in devices_list:
                     device = line.split(',')[0]
                     message += device + " is " + action(device, 'toggle') + ".\n"
-                update.message.reply_text(message)
+                bot.edit_message_text(text=message,
+                                      chat_id=query.message.chat_id,
+                                      message_id=query.message.message_id)
         else:
             text = query.data
             device = text.split('/')[1]
