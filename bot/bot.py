@@ -17,7 +17,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 
-def devices(bot, update):
+def mainmenu(bot, update):
     if os.path.isfile("devices.txt"):
         if os.path.getsize("devices.txt") > 0:
             with open('devices.txt') as devices_file:
@@ -40,6 +40,16 @@ def devices(bot, update):
                      InlineKeyboardButton('No', callback_data='cancel')]]
         reply_markup = InlineKeyboardMarkup(keyboard)
         update.message.reply_text('No device added, do you want to add one?', reply_markup=reply_markup)
+
+
+def info(bot, update):
+    with open('devices.txt') as devices_file:
+        devices_list = devices_file.readlines()
+        message = ''
+        for line in devices_list:
+            device = line.split(',')[0]
+            message += device + " is " + action(device, 'info') + ".\n"
+        update.message.reply_text(message)
 
 
 def usage(bot, update, query):
@@ -159,7 +169,7 @@ def removewake(bot, update):
 
 def help(bot, update):
     update.message.reply_text('Available commands:'
-                              + '\n' + '/devices'
+                              + '\n' + '/main'
                               + '\n' + '/add device_name, device_ip'
                               + '\n' + '/remove'
                               + '\n' + '/wake'
@@ -178,7 +188,7 @@ def main():
 
     updater = Updater(token())
 
-    updater.dispatcher.add_handler(CommandHandler('devices', devices))
+    updater.dispatcher.add_handler(CommandHandler('main', mainmenu))
     updater.dispatcher.add_handler(CommandHandler('add', adddevice))
     updater.dispatcher.add_handler(CommandHandler('remove', removedevice))
     updater.dispatcher.add_handler(CommandHandler('wake', wake))
