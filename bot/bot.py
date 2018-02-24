@@ -62,10 +62,10 @@ def removedevice(bot, update):
                 keyboard = []
                 for line in devices_list:
                     device = line.split(',')[0]
-                    keyboard.append([InlineKeyboardButton(device, callback_data='/remove' + device)], )
+                    keyboard.append([InlineKeyboardButton(device, callback_data='remove/' + device)], )
                 keyboard.append([InlineKeyboardButton('Cancel', callback_data='cancel')])
                 reply_markup = InlineKeyboardMarkup(keyboard)
-                update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
+                update.message.reply_text('What device do you want to remove?', reply_markup=reply_markup)
     else:
         keyboard = [[InlineKeyboardButton('Add device', callback_data='add'),
                      InlineKeyboardButton('No', callback_data='cancel')]]
