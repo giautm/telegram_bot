@@ -226,6 +226,7 @@ def main():
 
     updater.dispatcher.add_handler(CallbackQueryHandler(button))
     updater.dispatcher.add_handler(CommandHandler('help', help))
+    updater.dispatcher.add_handler(CommandHandler('start', help))
     updater.dispatcher.add_error_handler(error)
 
     # Start the Bot
