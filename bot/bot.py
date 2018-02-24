@@ -49,6 +49,7 @@ def toggle(bot, update):
         for line in devices_list:
             device = line.split(',')[0]
             keyboard.append([InlineKeyboardButton(device, callback_data='toggle/' + device)], )
+        keyboard.append([InlineKeyboardButton('Toggle all', callback_data='toggleall')])
         keyboard.append([InlineKeyboardButton('Cancel', callback_data='cancel')])
         reply_markup = InlineKeyboardMarkup(keyboard)
         update.message.reply_text('Which device do you want to toggle?', reply_markup=reply_markup)
@@ -121,12 +122,21 @@ def button(bot, update):
     query = update.callback_query
 
     if 'toggle' in query.data or 'info' in query.data:
-        text = query.data
-        device = text.split('/')[1]
-        request = text.split('/')[0]
-        bot.edit_message_text(text=device + " is " + action(device, request) + ".",
-                              chat_id=query.message.chat_id,
-                              message_id=query.message.message_id)
+        if query.data == 'toggleall':
+            with open('devices.txt') as devices_file:
+                devices_list = devices_file.readlines()
+                message = ''
+                for line in devices_list:
+                    device = line.split(',')[0]
+                    message += device + " is " + action(device, 'toggle') + ".\n"
+                update.message.reply_text(message)
+        else:
+            text = query.data
+            device = text.split('/')[1]
+            request = text.split('/')[0]
+            bot.edit_message_text(text=device + " is " + action(device, request) + ".",
+                                  chat_id=query.message.chat_id,
+                                  message_id=query.message.message_id)
     elif query.data == 'add':
         bot.edit_message_text(text='Add a device like this: "/add device_name, device_ip".',
                               chat_id=query.message.chat_id,
@@ -181,14 +191,14 @@ def removewake(bot, update):
 
 def help(bot, update):
     update.message.reply_text('Available commands:'
-                              + '\n' + '/main'
-                              + '\n' + '/toggle'
-                              + '\n' + '/info'
-                              + '\n' + '/add device_name, device_ip'
-                              + '\n' + '/remove'
-                              + '\n' + '/wake'
-                              + '\n' + '/addwake'
-                              + '\n' + '/removewake')
+                              + '\n' + '/main (to get to the main menu)'
+                              + '\n' + '/toggle (to toggle a device)'
+                              + '\n' + '/info (to get information about all devices)'
+                              + '\n' + '/add device_name, device_ip (to add a device)'
+                              + '\n' + '/remove (to remove a device)'
+                              + '\n' + '/wake (to wake the pc)'
+                              + '\n' + '/addwake (to add the pc)'
+                              + '\n' + '/removewake (to remove the pc)')
 
 
 def error(bot, update, error):
