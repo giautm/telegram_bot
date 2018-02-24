@@ -191,9 +191,12 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('main', mainmenu))
     updater.dispatcher.add_handler(CommandHandler('add', adddevice))
     updater.dispatcher.add_handler(CommandHandler('remove', removedevice))
+    updater.dispatcher.add_handler(CommandHandler('info', info))
+
     updater.dispatcher.add_handler(CommandHandler('wake', wake))
     updater.dispatcher.add_handler(CommandHandler('addwake', addwake))
     updater.dispatcher.add_handler(CommandHandler('removewake', removewake))
+
     updater.dispatcher.add_handler(CallbackQueryHandler(button))
     updater.dispatcher.add_handler(CommandHandler('help', help))
     updater.dispatcher.add_error_handler(error)
