@@ -55,21 +55,22 @@ def usage(bot, update, query):
 
 
 def removedevice(bot, update):
-    if len(update.message.text) <= 8:
-        update.message.reply_text('Command not used properly. Use /help to see the commands.')
+    if os.path.isfile("devices.txt"):
+        if os.path.getsize("devices.txt") > 0:
+            with open('devices.txt') as devices_file:
+                devices_list = devices_file.readlines()
+                keyboard = []
+                for line in devices_list:
+                    device = line.split(',')[0]
+                    keyboard.append([InlineKeyboardButton(device, callback_data=device)], )
+                keyboard.append([InlineKeyboardButton('Cancel', callback_data='cancel')])
+                reply_markup = InlineKeyboardMarkup(keyboard)
+                update.message.reply_text('Which device do you want to use?', reply_markup=reply_markup)
     else:
-        device = update.message.text[8::]
-        devices_file = open("devices.txt", 'r')
-        lines = devices_file.readlines()
-        devices_file.close()
-        devices_file = open("devices.txt", 'w')
-        for line in lines:
-            if device not in line:
-                devices_file.write(line)
-            else:
-                update.message.reply_text('Device (' + line.split('\n')[0] + ') removed!')
-                return
-        update.message.reply_text('Device (' + device + ') not found!')
+        keyboard = [[InlineKeyboardButton('Add device', callback_data='add'),
+                     InlineKeyboardButton('No', callback_data='cancel')]]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        update.message.reply_text('No device added, do you want to add one?', reply_markup=reply_markup)
 
 
 def adddevice(bot, update):
