@@ -42,6 +42,17 @@ def mainmenu(bot, update):
         update.message.reply_text('No device added, do you want to add one?', reply_markup=reply_markup)
 
 
+def toggle(bot, update):
+    with open('devices.txt') as devices_file:
+        devices_list = devices_file.readlines()
+        keyboard = []
+        for line in devices_list:
+            device = line.split(',')[0]
+            keyboard.append([InlineKeyboardButton(device, callback_data='toggle/' + device)], )
+            reply_markup = InlineKeyboardMarkup(keyboard)
+            update.message.reply_text('Which device do you want to toggle?', reply_markup=reply_markup)
+
+
 def info(bot, update):
     with open('devices.txt') as devices_file:
         devices_list = devices_file.readlines()
@@ -170,6 +181,8 @@ def removewake(bot, update):
 def help(bot, update):
     update.message.reply_text('Available commands:'
                               + '\n' + '/main'
+                              + '\n' + '/toggle'
+                              + '\n' + '/info'
                               + '\n' + '/add device_name, device_ip'
                               + '\n' + '/remove'
                               + '\n' + '/wake'
@@ -191,6 +204,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('main', mainmenu))
     updater.dispatcher.add_handler(CommandHandler('add', adddevice))
     updater.dispatcher.add_handler(CommandHandler('remove', removedevice))
+    updater.dispatcher.add_handler(CommandHandler('toggle', toggle))
     updater.dispatcher.add_handler(CommandHandler('info', info))
 
     updater.dispatcher.add_handler(CommandHandler('wake', wake))
