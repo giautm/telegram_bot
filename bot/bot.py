@@ -49,8 +49,8 @@ def toggle(bot, update):
         for line in devices_list:
             device = line.split(',')[0]
             keyboard.append([InlineKeyboardButton(device, callback_data='toggle/' + device)], )
-            reply_markup = InlineKeyboardMarkup(keyboard)
-            update.message.reply_text('Which device do you want to toggle?', reply_markup=reply_markup)
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        update.message.reply_text('Which device do you want to toggle?', reply_markup=reply_markup)
 
 
 def info(bot, update):
